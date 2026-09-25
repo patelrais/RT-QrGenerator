@@ -235,7 +235,7 @@
   .qrColorField input[type="color"]{width:36px;height:32px;padding:2px;border:1px solid var(--border);border-radius:6px;background:var(--panel);cursor:pointer;}
   .qrColorField span{font-size:12px;color:var(--text);}
 
-  .qrPresetRow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+  .qrPresetRow{display:flex;flex-wrap:nowrap;gap:8px;margin-bottom:10px;overflow-x:auto;padding-bottom:2px;}
   .qrPresetIcon{
     width:36px;height:36px;flex:none;border-radius:8px;
     display:flex;align-items:center;justify-content:center;
@@ -507,8 +507,8 @@
             <div class="qrField">
               <label>Size</label>
               <div class="qrSizeRow">
-                <input type="range" id="qrSizeSlider" min="150" max="600" step="10" value="280">
-                <span id="qrSizeLabel">280 px</span>
+                <input type="range" id="qrSizeSlider" min="150" max="600" step="10" value="230">
+                <span id="qrSizeLabel">230 px</span>
               </div>
             </div>
           </div>
@@ -636,7 +636,7 @@
   }
 
   function buildOptions(){
-    var size = parseInt(document.getElementById('qrSizeSlider') ? document.getElementById('qrSizeSlider').value : 280, 10) || 280;
+    var size = parseInt(document.getElementById('qrSizeSlider') ? document.getElementById('qrSizeSlider').value : 230, 10) || 230;
     var dotType = document.getElementById('qrDotStyle') ? document.getElementById('qrDotStyle').value : 'rounded';
     var cornerType = document.getElementById('qrCornerStyle') ? document.getElementById('qrCornerStyle').value : 'square';
     var fg = document.getElementById('qrFgColor') ? document.getElementById('qrFgColor').value : '#111318';
@@ -733,7 +733,7 @@
     return 'data:image/svg+xml;base64,' + btoa(svg);
   }
   var PRESET_LOGOS = {
-    whatsapp: presetIconSvg('#25d366', '<rect x="15" y="16" width="30" height="21" rx="10" fill="#fff"/><path d="M21 38l-4 8 9-4.5z" fill="#fff"/>'),
+    whatsapp: presetIconSvg('#25d366', '<g fill="#fff" transform="translate(16,16) scale(1.2)"><path d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.819V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z"/></g>'),
     instagram: presetIconSvg('#c1358a', '<rect x="14" y="14" width="32" height="32" rx="9" fill="none" stroke="#fff" stroke-width="3"/><circle cx="30" cy="30" r="8" fill="none" stroke="#fff" stroke-width="3"/><circle cx="38" cy="22" r="2" fill="#fff"/>'),
     facebook: presetIconSvg('#1877f2', '<text x="30" y="42" font-family="Arial, sans-serif" font-size="32" font-weight="bold" text-anchor="middle" fill="#fff">f</text>'),
     website: presetIconSvg('#4f6bed', '<circle cx="30" cy="30" r="16" fill="none" stroke="#fff" stroke-width="3"/><ellipse cx="30" cy="30" rx="7" ry="16" fill="none" stroke="#fff" stroke-width="3"/><line x1="14" y1="30" x2="46" y2="30" stroke="#fff" stroke-width="3"/>'),
