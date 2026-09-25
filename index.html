@@ -235,6 +235,17 @@
   .qrColorField input[type="color"]{width:36px;height:32px;padding:2px;border:1px solid var(--border);border-radius:6px;background:var(--panel);cursor:pointer;}
   .qrColorField span{font-size:12px;color:var(--text);}
 
+  .qrPresetRow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+  .qrPresetIcon{
+    width:36px;height:36px;flex:none;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;border:2px solid transparent;background-size:cover;background-repeat:no-repeat;background-position:center;
+    background-color:var(--panel);
+  }
+  .qrPresetIcon.none{border:1px solid var(--border);color:var(--muted);font-size:18px;}
+  .qrPresetIcon.active{border-color:var(--link);}
+  .qrPresetIcon:hover{border-color:var(--link);}
+
   .qrLogoRow{display:flex;align-items:center;gap:10px;}
   .qrLogoPreview{
     width:40px;height:40px;flex:none;border-radius:6px;border:1px solid var(--border);
@@ -245,6 +256,7 @@
     padding:7px 12px;font-size:12px;font-weight:700;color:var(--btn-text);
     background:linear-gradient(var(--btn-top),var(--btn-bottom));border:1px solid var(--border);border-radius:6px;cursor:pointer;
   }
+  .qrBtnFixed{width:104px;text-align:center;}
   .qrBtnSmall:hover{background:linear-gradient(var(--btn-top),var(--btn-hover-bottom));}
 
   .qrSizeRow{display:flex;align-items:center;gap:10px;}
@@ -477,10 +489,18 @@
             </div>
             <div class="qrField">
               <label>Logo (optional, stays in your browser)</label>
+              <div class="qrPresetRow" id="qrPresetRow">
+                <a class="qrPresetIcon none active" id="qrPresetNone" title="No logo">&#8856;</a>
+                <a class="qrPresetIcon" data-preset="whatsapp" title="WhatsApp"></a>
+                <a class="qrPresetIcon" data-preset="instagram" title="Instagram"></a>
+                <a class="qrPresetIcon" data-preset="facebook" title="Facebook"></a>
+                <a class="qrPresetIcon" data-preset="website" title="Website"></a>
+                <a class="qrPresetIcon" data-preset="video" title="Video"></a>
+              </div>
               <div class="qrLogoRow">
                 <div class="qrLogoPreview" id="qrLogoPreview"></div>
-                <button type="button" class="qrBtnSmall" id="qrLogoUploadBtn">Upload logo</button>
-                <button type="button" class="qrBtnSmall" id="qrLogoRemoveBtn" hidden>Remove</button>
+                <button type="button" class="qrBtnSmall qrBtnFixed" id="qrLogoUploadBtn">Upload logo</button>
+                <button type="button" class="qrBtnSmall qrBtnFixed" id="qrLogoRemoveBtn" style="visibility:hidden;">Remove</button>
                 <input type="file" id="qrLogoInput" accept="image/*" hidden>
               </div>
             </div>
@@ -683,26 +703,48 @@
   var logoInput = document.getElementById('qrLogoInput');
   var logoPreview = document.getElementById('qrLogoPreview');
   var logoRemoveBtn = document.getElementById('qrLogoRemoveBtn');
+
+  function setActivePreset(el){
+    document.querySelectorAll('.qrPresetIcon').forEach(function(p){ p.classList.remove('active'); });
+    if (el) el.classList.add('active');
+  }
+  function setLogo(dataUrl, activePresetEl){
+    logoDataUrl = dataUrl;
+    logoPreview.innerHTML = dataUrl ? '<img src="' + dataUrl + '" alt="logo">' : '';
+    logoRemoveBtn.style.visibility = dataUrl ? 'visible' : 'hidden';
+    setActivePreset(activePresetEl);
+    refresh();
+  }
+
   document.getElementById('qrLogoUploadBtn').addEventListener('click', function(){ logoInput.click(); });
   logoInput.addEventListener('change', function(){
     var file = logoInput.files && logoInput.files[0];
     if (!file) return;
     var reader = new FileReader();
-    reader.onload = function(){
-      logoDataUrl = String(reader.result);
-      logoPreview.innerHTML = '<img src="' + logoDataUrl + '" alt="logo">';
-      logoRemoveBtn.hidden = false;
-      refresh();
-    };
+    reader.onload = function(){ setLogo(String(reader.result), null); };
     reader.readAsDataURL(file);
     logoInput.value = '';
   });
-  logoRemoveBtn.addEventListener('click', function(){
-    logoDataUrl = null;
-    logoPreview.innerHTML = '';
-    logoRemoveBtn.hidden = true;
-    refresh();
+  logoRemoveBtn.addEventListener('click', function(){ setLogo(null, document.getElementById('qrPresetNone')); });
+
+  // ---------- readymade preset logos ----------
+  function presetIconSvg(bg, glyph){
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"><rect width="60" height="60" rx="14" fill="' + bg + '"/>' + glyph + '</svg>';
+    return 'data:image/svg+xml;base64,' + btoa(svg);
+  }
+  var PRESET_LOGOS = {
+    whatsapp: presetIconSvg('#25d366', '<rect x="15" y="16" width="30" height="21" rx="10" fill="#fff"/><path d="M21 38l-4 8 9-4.5z" fill="#fff"/>'),
+    instagram: presetIconSvg('#c1358a', '<rect x="14" y="14" width="32" height="32" rx="9" fill="none" stroke="#fff" stroke-width="3"/><circle cx="30" cy="30" r="8" fill="none" stroke="#fff" stroke-width="3"/><circle cx="38" cy="22" r="2" fill="#fff"/>'),
+    facebook: presetIconSvg('#1877f2', '<text x="30" y="42" font-family="Arial, sans-serif" font-size="32" font-weight="bold" text-anchor="middle" fill="#fff">f</text>'),
+    website: presetIconSvg('#4f6bed', '<circle cx="30" cy="30" r="16" fill="none" stroke="#fff" stroke-width="3"/><ellipse cx="30" cy="30" rx="7" ry="16" fill="none" stroke="#fff" stroke-width="3"/><line x1="14" y1="30" x2="46" y2="30" stroke="#fff" stroke-width="3"/>'),
+    video: presetIconSvg('#e02020', '<circle cx="30" cy="30" r="17" fill="none" stroke="#fff" stroke-width="3"/><path d="M25 21l16 9-16 9z" fill="#fff"/>')
+  };
+  document.querySelectorAll('.qrPresetIcon[data-preset]').forEach(function(el){
+    var key = el.dataset.preset;
+    el.style.backgroundImage = 'url(' + PRESET_LOGOS[key] + ')';
+    el.addEventListener('click', function(){ setLogo(PRESET_LOGOS[key], el); });
   });
+  document.getElementById('qrPresetNone').addEventListener('click', function(){ setLogo(null, document.getElementById('qrPresetNone')); });
 
   // ---------- download ----------
   document.getElementById('qrDownloadPng').addEventListener('click', function(){
