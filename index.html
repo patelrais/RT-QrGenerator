@@ -204,6 +204,7 @@
     margin-bottom:16px;
   }
   .qrSectionTitle{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--text);margin-bottom:14px;}
+  #qrContentPanes{position:relative;}
   .qrSectionTitle .num{
     flex:none;width:20px;height:20px;border-radius:50%;background:var(--link);color:#fff;
     display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;
@@ -349,6 +350,7 @@
           <div class="qrSection">
             <div class="qrSectionTitle"><span class="num">1</span> Complete the content</div>
 
+            <div id="qrContentPanes">
             <div class="qrTypePane" data-pane="website">
               <div class="qrField">
                 <label for="qrWebsiteUrl">Website URL</label>
@@ -443,6 +445,7 @@
                   <input type="url" id="qrVcardUrl" placeholder="https://">
                 </div>
               </div>
+            </div>
             </div>
           </div>
 
@@ -679,6 +682,28 @@
       typePanes.forEach(function(p){ p.hidden = p.dataset.pane !== activeType; });
       refresh();
     });
+  });
+
+  // Lock "Complete the content" to the height of its tallest variant (vCard/Wi-Fi
+  // have more fields than Website/Phone), so "Design your QR" below never shifts
+  // position when switching content types.
+  var contentPanes = document.getElementById('qrContentPanes');
+  function lockContentPanesHeight(){
+    contentPanes.style.minHeight = '';
+    var maxH = 0;
+    typePanes.forEach(function(p){
+      var wasHidden = p.hidden;
+      p.hidden = false;
+      maxH = Math.max(maxH, p.getBoundingClientRect().height);
+      p.hidden = wasHidden;
+    });
+    contentPanes.style.minHeight = Math.ceil(maxH) + 'px';
+  }
+  lockContentPanesHeight();
+  var resizeDebounce;
+  window.addEventListener('resize', function(){
+    clearTimeout(resizeDebounce);
+    resizeDebounce = setTimeout(lockContentPanesHeight, 200);
   });
 
   // ---------- wire all content + design inputs ----------
