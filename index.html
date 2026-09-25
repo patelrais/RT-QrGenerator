@@ -182,10 +182,17 @@
 
   .qrLayout{display:flex;gap:20px;max-width:900px;margin:0 auto;align-items:flex-start;flex-wrap:wrap;}
   .qrLeft{flex:1 1 420px;min-width:0;}
-  .qrRight{
+  .qrRightCol{
     flex:0 0 280px;
+    width:280px;
+    min-width:0;
     position:sticky;
     top:0;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .qrRight{
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -194,7 +201,16 @@
     background:var(--toolbar-bg);
     border:1px solid var(--border);
     border-radius:10px;
+    min-width:0;
   }
+  .qrLogoBox{
+    padding:18px;
+    background:var(--toolbar-bg);
+    border:1px solid var(--border);
+    border-radius:10px;
+    min-width:0;
+  }
+  .qrLogoBox .qrSectionTitle{margin-bottom:12px;}
 
   .qrSection{
     background:var(--toolbar-bg);
@@ -236,7 +252,7 @@
   .qrColorField input[type="color"]{width:36px;height:32px;padding:2px;border:1px solid var(--border);border-radius:6px;background:var(--panel);cursor:pointer;}
   .qrColorField span{font-size:12px;color:var(--text);}
 
-  .qrPresetRow{display:flex;flex-wrap:nowrap;gap:8px;margin-bottom:10px;overflow-x:auto;padding-bottom:2px;}
+  .qrPresetRow{display:flex;flex-wrap:nowrap;gap:8px;margin-bottom:10px;overflow-x:auto;padding-bottom:2px;min-width:0;max-width:100%;}
   .qrPresetIcon{
     width:36px;height:36px;flex:none;border-radius:8px;
     display:flex;align-items:center;justify-content:center;
@@ -312,7 +328,7 @@
 
   @media (max-width:760px){
     .qrLayout{flex-direction:column;}
-    .qrRight{position:static;width:100%;flex:none;}
+    .qrRightCol{position:static;width:100%;flex:none;}
   }
 </style>
 
@@ -491,23 +507,6 @@
               </select>
             </div>
             <div class="qrField">
-              <label>Logo (optional, stays in your browser)</label>
-              <div class="qrPresetRow" id="qrPresetRow">
-                <a class="qrPresetIcon none active" id="qrPresetNone" title="No logo">&#8856;</a>
-                <a class="qrPresetIcon" data-preset="whatsapp" title="WhatsApp"></a>
-                <a class="qrPresetIcon" data-preset="instagram" title="Instagram"></a>
-                <a class="qrPresetIcon" data-preset="facebook" title="Facebook"></a>
-                <a class="qrPresetIcon" data-preset="website" title="Website"></a>
-                <a class="qrPresetIcon" data-preset="video" title="Video"></a>
-              </div>
-              <div class="qrLogoRow">
-                <div class="qrLogoPreview" id="qrLogoPreview"></div>
-                <button type="button" class="qrBtnSmall qrBtnFixed" id="qrLogoUploadBtn">Upload logo</button>
-                <button type="button" class="qrBtnSmall qrBtnFixed" id="qrLogoRemoveBtn" style="visibility:hidden;">Remove</button>
-                <input type="file" id="qrLogoInput" accept="image/*" hidden>
-              </div>
-            </div>
-            <div class="qrField">
               <label>Size</label>
               <div class="qrSizeRow">
                 <input type="range" id="qrSizeSlider" min="150" max="600" step="10" value="230">
@@ -517,14 +516,41 @@
           </div>
         </div>
 
-        <div class="qrRight">
-          <div class="qrSectionTitle" style="margin-bottom:0;"><span class="num">3</span> Download your QR</div>
-          <div id="qrPreview"></div>
-          <div class="qrDownloadRow">
-            <button type="button" class="qrDownloadBtn" id="qrDownloadPng">Download PNG</button>
-            <button type="button" class="qrDownloadBtn" id="qrDownloadSvg">Download SVG</button>
+        <div class="qrRightCol">
+          <div class="qrRight">
+            <div class="qrSectionTitle" style="margin-bottom:0;"><span class="num">3</span> Download your QR</div>
+            <div id="qrPreview"></div>
+            <div class="qrDownloadRow">
+              <button type="button" class="qrDownloadBtn" id="qrDownloadPng">Download PNG</button>
+              <button type="button" class="qrDownloadBtn" id="qrDownloadSvg">Download SVG</button>
+            </div>
+            <div class="qrHint">Generated entirely in your browser - nothing is uploaded.</div>
           </div>
-          <div class="qrHint">Generated entirely in your browser - nothing is uploaded.</div>
+
+          <div class="qrLogoBox">
+            <div class="qrSectionTitle">Select a logo</div>
+            <div class="qrPresetRow" id="qrPresetRow">
+              <a class="qrPresetIcon none active" id="qrPresetNone" title="No logo">&#8856;</a>
+              <a class="qrPresetIcon" data-preset="whatsapp" title="WhatsApp"></a>
+              <a class="qrPresetIcon" data-preset="instagram" title="Instagram"></a>
+              <a class="qrPresetIcon" data-preset="facebook" title="Facebook"></a>
+              <a class="qrPresetIcon" data-preset="website" title="Website"></a>
+              <a class="qrPresetIcon" data-preset="video" title="Video"></a>
+              <a class="qrPresetIcon" data-preset="location" title="Location"></a>
+              <a class="qrPresetIcon" data-preset="wifi" title="Wi-Fi"></a>
+              <a class="qrPresetIcon" data-preset="contact" title="Contact"></a>
+              <a class="qrPresetIcon" data-preset="email" title="Email"></a>
+              <a class="qrPresetIcon" data-preset="scan" title="Scan"></a>
+              <a class="qrPresetIcon" data-preset="image" title="Image"></a>
+              <a class="qrPresetIcon" data-preset="menu" title="Menu"></a>
+            </div>
+            <div class="qrLogoRow">
+              <div class="qrLogoPreview" id="qrLogoPreview"></div>
+              <button type="button" class="qrBtnSmall qrBtnFixed" id="qrLogoUploadBtn">Upload logo</button>
+              <button type="button" class="qrBtnSmall qrBtnFixed" id="qrLogoRemoveBtn" style="visibility:hidden;">Remove</button>
+              <input type="file" id="qrLogoInput" accept="image/*" hidden>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -762,7 +788,14 @@
     instagram: presetIconSvg('#c1358a', '<rect x="14" y="14" width="32" height="32" rx="9" fill="none" stroke="#fff" stroke-width="3"/><circle cx="30" cy="30" r="8" fill="none" stroke="#fff" stroke-width="3"/><circle cx="38" cy="22" r="2" fill="#fff"/>'),
     facebook: presetIconSvg('#1877f2', '<text x="30" y="42" font-family="Arial, sans-serif" font-size="32" font-weight="bold" text-anchor="middle" fill="#fff">f</text>'),
     website: presetIconSvg('#4f6bed', '<circle cx="30" cy="30" r="16" fill="none" stroke="#fff" stroke-width="3"/><ellipse cx="30" cy="30" rx="7" ry="16" fill="none" stroke="#fff" stroke-width="3"/><line x1="14" y1="30" x2="46" y2="30" stroke="#fff" stroke-width="3"/>'),
-    video: presetIconSvg('#e02020', '<circle cx="30" cy="30" r="17" fill="none" stroke="#fff" stroke-width="3"/><path d="M25 21l16 9-16 9z" fill="#fff"/>')
+    video: presetIconSvg('#e02020', '<circle cx="30" cy="30" r="17" fill="none" stroke="#fff" stroke-width="3"/><path d="M25 21l16 9-16 9z" fill="#fff"/>'),
+    location: presetIconSvg('#ef4444', '<g fill="#fff" transform="translate(16,15) scale(1.15)"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z"/></g>'),
+    wifi: presetIconSvg('#14b8a6', '<circle cx="30" cy="42" r="3" fill="#fff"/><path d="M22 34a11.5 11.5 0 0116 0" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/><path d="M16 28a19.5 19.5 0 0128 0" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/><path d="M10 22a27.5 27.5 0 0140 0" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/>'),
+    contact: presetIconSvg('#2563eb', '<rect x="12" y="20" width="36" height="24" rx="4" fill="none" stroke="#fff" stroke-width="3"/><circle cx="22" cy="32" r="4" fill="#fff"/><line x1="30" y1="28" x2="42" y2="28" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><line x1="30" y1="34" x2="42" y2="34" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>'),
+    email: presetIconSvg('#d97706', '<rect x="12" y="18" width="36" height="26" rx="4" fill="none" stroke="#fff" stroke-width="3"/><path d="M14 20l16 13 16-13" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'),
+    scan: presetIconSvg('#a855f7', '<path d="M14 22v-6a2 2 0 012-2h6" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/><path d="M46 22v-6a2 2 0 00-2-2h-6" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/><path d="M14 38v6a2 2 0 002 2h6" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/><path d="M46 38v6a2 2 0 01-2 2h-6" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/><circle cx="30" cy="30" r="6" fill="#fff"/>'),
+    image: presetIconSvg('#22c55e', '<rect x="10" y="14" width="40" height="32" rx="4" fill="none" stroke="#fff" stroke-width="3"/><circle cx="21" cy="25" r="4" fill="#fff"/><path d="M12 40l11-11 8 8 7-9 12 12" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'),
+    menu: presetIconSvg('#8b5cf6', '<g stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"><line x1="18" y1="14" x2="18" y2="22"/><line x1="22" y1="14" x2="22" y2="22"/><line x1="26" y1="14" x2="26" y2="22"/><path d="M18 22c0 4 3.5 5 4 5s4-1 4-5"/><line x1="22" y1="27" x2="22" y2="46"/><path d="M40 14c3 3 3 9 0 13v19"/></g>')
   };
   document.querySelectorAll('.qrPresetIcon[data-preset]').forEach(function(el){
     var key = el.dataset.preset;
