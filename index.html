@@ -137,6 +137,13 @@
   .toolLink{padding:0 12px;font-size:13px;font-weight:600;color:var(--link);text-decoration:none;cursor:pointer;display:flex;align-items:center;white-space:nowrap;}
   .toolLink:first-of-type{margin-left:auto;}
   .toolLink:hover{text-decoration:underline;}
+  .toolLink.toolIcon{padding:0 4px;}
+  .toolLink.toolIcon:hover{text-decoration:none;}
+  .ti{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:24px;padding:0 6px;border-radius:7px;color:#fff;font-size:10.5px;font-weight:800;letter-spacing:.2px;box-shadow:0 1px 2px rgba(0,0,0,.2);transition:transform .12s ease, box-shadow .12s ease;}
+  .toolIcon:hover .ti{transform:translateY(-1px);box-shadow:0 3px 8px rgba(0,0,0,.28);}
+  .ti-json{background:#e0587a;} .ti-html{background:#e08a2f;} .ti-pwd{background:#5b57d1;} .ti-csv{background:#0f8a9e;} .ti-qr{background:#1f9d55;} .ti-js{background:#e8b71a;color:#2a2000;} .ti-b64{background:#7b4fd0;}
+  .ti{min-width:0;width:28px;height:26px;padding:0;}
+  .ti svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block;}
   .themeReset{display:flex;align-items:center;font-size:15px;padding:0 8px 0 4px;color:var(--muted);cursor:pointer;user-select:none;}
   .themeReset:not(.show){display:none;}
   .themeReset:hover{color:var(--link);}
@@ -361,11 +368,11 @@
   <div class="app">
     <div class="tabs">
       <div class="titleTab">QR Code Generator</div>
-      <a class="toolLink" href="https://jsonviewer.tasqen.com/" target="_blank" rel="noopener">JSON Viewer</a>
-      <a class="toolLink" href="https://htmlviewer.tasqen.com/" target="_blank" rel="noopener">HTML Viewer</a>
-      <a class="toolLink" href="https://password.tasqen.com/" target="_blank" rel="noopener">Password Generator</a>
-      <a class="toolLink" href="https://csv.tasqen.com/" target="_blank" rel="noopener">CSV Viewer</a>
-      <a class="toolLink" href="https://base64.tasqen.com/" target="_blank" rel="noopener">Base64 Converter</a>
+      <a class="toolLink toolIcon" href="https://jsonviewer.tasqen.com/" target="_blank" rel="noopener" title="JSON Viewer" aria-label="JSON Viewer"><span class="ti ti-json"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4c-2 0-3 1-3 3v2c0 1-1 3-2 3 1 0 2 2 2 3v2c0 2 1 3 3 3"/><path d="M16 4c2 0 3 1 3 3v2c0 1 1 3 2 3-1 0-2 2-2 3v2c0 2-1 3-3 3"/></svg></span></a>
+      <a class="toolLink toolIcon" href="https://htmlviewer.tasqen.com/" target="_blank" rel="noopener" title="HTML Viewer" aria-label="HTML Viewer"><span class="ti ti-html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"/></svg></span></a>
+      <a class="toolLink toolIcon" href="https://password.tasqen.com/" target="_blank" rel="noopener" title="Password Generator" aria-label="Password Generator"><span class="ti ti-pwd"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg></span></a>
+      <a class="toolLink toolIcon" href="https://csv.tasqen.com/" target="_blank" rel="noopener" title="CSV Viewer" aria-label="CSV Viewer"><span class="ti ti-csv"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M10 4v16"/></svg></span></a>
+      <a class="toolLink toolIcon" href="https://base64.tasqen.com/" target="_blank" rel="noopener" title="Base64 Converter" aria-label="Base64 Converter"><span class="ti ti-b64"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h12m0 0l-4-4m4 4l-4 4M17 17H5m0 0l4-4m-4 4l4 4"/></svg></span></a>
       <a id="btnAbout" class="aboutLink" title="About">About</a>
       <span class="themeReset" id="themeReset" title="Reset to automatic (follow local time)">&#8635;</span>
       <div class="themeToggle" id="themeToggle" title="Toggle dark mode"><span id="themeIcon">&#9789;</span></div>
